@@ -1,0 +1,12 @@
+FROM node:12-alpine
+
+WORKDIR /project
+
+COPY package.json package-lock.json /project/
+
+RUN npm install
+
+COPY . /project/
+
+RUN npm run build
+
