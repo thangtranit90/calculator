@@ -1,0 +1,22 @@
+FROM node:16-alpine as buildstep
+
+WORKDIR /app
+
+COPY ./calculator/package*.json .
+
+RUN npm install
+
+COPY ./calculator .
+
+RUN npm run build
+
+RUN ls -l
+
+#stage 2
+FROM nginx:stable-alpine-slim 
+
+COPY --from=buildstep /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD nginx -g 'daemon off;'
